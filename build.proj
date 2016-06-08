@@ -16,11 +16,19 @@
     <WinPEBootData>2#p0,e,b&quot;$(WinPEFwfiles)etfsboot.com&quot;#pEF,e,b&quot;$(WinPEFwfiles)efisys.bin&quot;</WinPEBootData>
     <WinPEBootWim>&quot;$(WinPEMedia)\sources\boot.wim&quot;</WinPEBootWim>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- Start scripts and Applications -->
+    <StartScripts Include="$(MSBuildProjectDirectory)\Windows\**\*.*" />
+    <Applications Include="$(MSBuildProjectDirectory)\Applications\**\*.*" />
+  </ItemGroup>
 
   <Target Name="Customizations">
     <Message Text="WinPE: Mount and Customize" />
     <!-- Add a startup script -->
+    <Copy SourceFiles="@(StartScripts)" DestinationFiles="@(StartScripts->'$(WinPEMount)\Windows\%(RecursiveDir)%(Filename)%(Extension)')" />
     <!-- Add an app -->
+    <Copy SourceFiles="@(Applications)" DestinationFiles="@(Applications->'$(WinPEMount)\Applications\%(RecursiveDir)%(Filename)%(Extension)')" />
     <!-- Add temporary storage (scratch space) -->
     <!-- Replace the background image -->
   </Target>
