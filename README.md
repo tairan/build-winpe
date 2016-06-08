@@ -5,6 +5,7 @@ This project for customize WinPE by MSBuild.
 
 ## PREREQUISITE
 
+* [Windows Software Development Kit (SDK) for Windows 10](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
 * [Windows ADK for Windows 10, Version 1511](https://developer.microsoft.com/en-us/windows/hardware/windows-assessment-deployment-kit)
 
 
