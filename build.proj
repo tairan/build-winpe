@@ -1,5 +1,4 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildThisFileDirectory)winpe.props" />
 
   <PropertyGroup>
     <DeploymentTools>C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\</DeploymentTools>
@@ -10,12 +9,12 @@
   
   <PropertyGroup>
     <WinPEWorkingDirectory>C:\WinPE_amd64\</WinPEWorkingDirectory>
-    <!-- dism do not support black-slash -->
+    <!-- dism do not support back-slash -->
     <WinPEMount>$(WinPEWorkingDirectory)mount</WinPEMount>
     <WinPEMedia>$(WinPEWorkingDirectory)media</WinPEMedia>
     <WinPEFwfiles>$(WinPEWorkingDirectory)fwfiles\</WinPEFwfiles>
     <WinPEBootData>2#p0,e,b&quot;$(WinPEFwfiles)etfsboot.com&quot;#pEF,e,b&quot;$(WinPEFwfiles)efisys.bin&quot;</WinPEBootData>
-    <WinPEBootWim>&quot;$(WinPEMedia)sources\boot.wim&quot;</WinPEBootWim>
+    <WinPEBootWim>&quot;$(WinPEMedia)\sources\boot.wim&quot;</WinPEBootWim>
   </PropertyGroup>
 
   <Target Name="Customizations">
