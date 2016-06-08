@@ -1,0 +1,53 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildThisFileDirectory)winpe.props" />
+
+  <PropertyGroup>
+    <DeploymentTools>C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\</DeploymentTools>
+    <WindowsPreinstallationEnvironment>C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\</WindowsPreinstallationEnvironment>
+    <Dism>&quot;$(DeploymentTools)amd64\DISM\dism.exe&quot;</Dism>
+    <Oscdimg>&quot;$(DeploymentTools)amd64\Oscdimg\oscdimg.exe&quot;</Oscdimg>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <WinPEWorkingDirectory>C:\WinPE_amd64\</WinPEWorkingDirectory>
+    <!-- dism do not support black-slash -->
+    <WinPEMount>$(WinPEWorkingDirectory)mount</WinPEMount>
+    <WinPEMedia>$(WinPEWorkingDirectory)media</WinPEMedia>
+    <WinPEFwfiles>$(WinPEWorkingDirectory)fwfiles\</WinPEFwfiles>
+    <WinPEBootData>2#p0,e,b&quot;$(WinPEFwfiles)etfsboot.com&quot;#pEF,e,b&quot;$(WinPEFwfiles)efisys.bin&quot;</WinPEBootData>
+    <WinPEBootWim>&quot;$(WinPEMedia)sources\boot.wim&quot;</WinPEBootWim>
+  </PropertyGroup>
+
+  <Target Name="Customizations">
+    <Message Text="WinPE: Mount and Customize" />
+    <!-- Add a startup script -->
+    <!-- Add an app -->
+    <!-- Add temporary storage (scratch space) -->
+    <!-- Replace the background image -->
+  </Target>
+
+  <Target Name="Build">
+    <!-- Copy WinPE -->
+    <!-- Mount WinPE Media -->
+    <Exec Command="$(Dism) /Mount-Image /ImageFile:$(WinPEBootWim) /Index:1 /MountDir:&quot;$(WinPEMount)&quot;" />
+    <!-- Install Packages -->
+    <!--<Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-DismCmdlets.cab&quot;" />-->
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-Fonts-Legacy.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-FontSupport-ZH-CN.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-NetFx.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-PowerShell.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-WMI.cab&quot;" />
+    <!-- Add customizations -->
+    <CallTarget Targets="Customizations" />
+    <!-- Commit -->
+    <Exec Command="$(Dism) /Unmount-Image /MountDir:&quot;$(WinPEMount)&quot; /commit" />
+    <!-- Make WinPE Media -->
+    <Exec Command="$(Oscdimg) -bootdata:$(WinPEBootData) -u1 -udfver102 &quot;$(WinPEMedia)&quot; &quot;C:\WinPE.iso&quot;" />
+    <!-- Cleanup -->
+    <Exec Command="$(Dism) /Cleanup-Mountpoints" />
+  </Target>
+
+  <Target Name="Discard">
+    <Exec Command="$(Dism) /Unmount-Image /MountDir:&quot;$(WinPEMount)&quot; /discard" />
+  </Target>
+</Project>
