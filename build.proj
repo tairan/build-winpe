@@ -38,12 +38,14 @@
     <!-- Mount WinPE Media -->
     <Exec Command="$(Dism) /Mount-Image /ImageFile:$(WinPEBootWim) /Index:1 /MountDir:&quot;$(WinPEMount)&quot;" />
     <!-- Install Packages -->
-    <!--<Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-DismCmdlets.cab&quot;" />-->
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-WMI.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-NetFx.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-Scripting.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-PowerShell.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-StorageWMI.cab&quot;" />
+    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-DismCmdlets.cab&quot;" />
     <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-Fonts-Legacy.cab&quot;" />
     <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-FontSupport-ZH-CN.cab&quot;" />
-    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-NetFx.cab&quot;" />
-    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-PowerShell.cab&quot;" />
-    <Exec Command="$(Dism) /Add-Package /Image:&quot;$(WinPEMount)&quot; /PackagePath:&quot;$(WindowsPreinstallationEnvironment)amd64\WinPE_OCs\WinPE-WMI.cab&quot;" />
     <!-- Add customizations -->
     <CallTarget Targets="Customizations" />
     <!-- Commit -->
